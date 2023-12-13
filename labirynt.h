@@ -25,9 +25,13 @@ void ktore_obok(labirynt);
 
 void losuj(labirynt, int);
 
-void push(int);
+head init_stos();
 
-int pop();
+void push(head, int);
+
+int pop(head);
+
+void generuj(labirynt);
 
 void wypisz(labirynt);
 

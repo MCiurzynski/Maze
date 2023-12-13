@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
 #include "labirynt.h"
 
 labirynt init(int n) {
@@ -144,6 +143,36 @@ void losuj(labirynt l, int x)
 			}
 		}
 	}
+}
+
+head init_stos() {
+	head stos = malloc(sizeof(*stos));
+	return stos;
+}
+
+void push(head stos, int a) {
+	element_pointer next = malloc(sizeof(*next));
+	next->n = a;
+	next->next = stos->next;
+	stos->next = next;
+}
+
+int pop(head stos) {
+	int x;
+	if (stos->next == NULL)
+		return -1;
+	element_pointer tmp = stos->next;
+	stos->next = tmp->next;
+	x = tmp->n;
+	free(tmp);
+	return x;
+}
+
+void generuj(labirynt l) {
+	head stos = init_stos();
+	int start = l->n / 2;
+	push(stos, start);
+
 }
 
 void wypisz(labirynt l) {
