@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
 	int i;
 	losuj(l, x);
 	head stos = init_stos();
-	printf("%d\n", pop(stos));
+	generuj(l);
 //	for (i = 0; i < n * n; i++)
 //		printf("%d: %d %d %d %d\n", i, l->obok[i][0], l->obok[i][1], l->obok[i][2], l->obok[i][3]);
 	wypisz(l);

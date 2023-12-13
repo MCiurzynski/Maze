@@ -169,25 +169,29 @@ int pop(head stos) {
 }
 
 void generuj(labirynt l) {
-	int i;
+	int i, x;
 	head stos = init_stos();
 	int poz = l->n / 2;
 	push(stos, poz);
+	l->visited[poz] = 1;
 	while (stos->next != NULL) {
+		x = 0;
 		for (i = 0; i < 4; i++) {
 			if (l->obok[poz][i] != -1) {
 				if (l->visited[l->obok[poz][i]] == 0) {
 					push(stos, poz);
 					l->visited[l->obok[poz][i]] = 1;
-					l->maze[poz][l->obok[poz]]] = 1;
+					l->maze[poz][l->obok[poz][i]] = (double)rand() / RAND_MAX * 10;
 					poz = l->obok[poz][i];
-					continue;
+					x = 1;
 				}
 			}
 		}
-		poz = pop(stos);
+		if (x == 0)
+			poz = pop(stos);
 	}
 }
+
 
 void wypisz(labirynt l) {
 	int i, j;
