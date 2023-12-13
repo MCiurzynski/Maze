@@ -8,21 +8,27 @@ typedef struct element {
 
 typedef struct head {
 	element_pointer next;	
-} head;
+} *head;
 
 typedef struct labirynt {
 	double **maze;
 	int n;
-	int *odwiedzone;
-	head stos;
-} labirynt;
+	int *visited;
+    int **obok;
+} *labirynt;
 
-double **init(int n);
+labirynt init(int);
 
-void push(int n);
+void free_labirynt(labirynt);
+
+void ktore_obok(labirynt);
+
+void losuj(labirynt, int);
+
+void push(int);
 
 int pop();
 
-void wypisz(double **labirynt, int n);
+void wypisz(labirynt);
 
 #endif
