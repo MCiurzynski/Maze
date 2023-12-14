@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "labirynt.h"
 
 labirynt init(int n) {
@@ -129,10 +130,14 @@ void ktore_obok(labirynt l) {
 	}
 }
 
-void losuj(labirynt l, int x)
+void losuj(labirynt l)
 {
 	int i, j, poz, tmp;
-	srand(x);
+#ifdef DEBUG
+    srand(DEBUG);
+#else
+    srand(time(NULL));
+#endif
 	for (i = 0; i < l->n * l->n; i++) {
 		for (j = 0; j < 4; j++) {
 			poz = ((double)rand()/RAND_MAX) * 4;
@@ -169,9 +174,10 @@ int pop(head stos) {
 }
 
 void generuj(labirynt l) {
-	int i, x, koniec;
+	int i, x, koniec, poz = l->n / 2;
 	head stos = init_stos();
-	int poz = l->n / 2;
+    ktore_obok(l);
+    losuj(l);
 	koniec = l->n * l->n - l->n + (l->n/2);
 	push(stos, poz);
 	l->visited[poz] = 1;
@@ -199,6 +205,12 @@ void generuj(labirynt l) {
 
 void wypisz(labirynt l) {
 	int i, j;
+	for (i = 0; i < l->n / 2; i++)
+		printf("    ");
+	printf("  |-----Wejscie\n");
+	for (i = 0; i < l->n / 2; i++)
+		printf("    ");
+	printf("  v\n");
 	for (i = 0; i < l->n; i++) {
 		if (i != l->n / 2)
 			printf("+---");
@@ -232,4 +244,18 @@ void wypisz(labirynt l) {
 			printf("+   ");
 	}
 	printf("+\n");
+	for (i = 0; i < l->n / 2; i++)
+		printf("    ");
+	printf("  ^\n");
+	for (i = 0; i < l->n / 2; i++)
+		printf("    ");
+	printf("  |-----Wyjscie\n");
+}
+
+int czy_liczba(char *liczba) {
+	int i;
+	for (i = 0; liczba[i]; i++)
+		if (liczba[i] < '0' || liczba[i] > '9')
+			return 0;
+	return 1;
 }

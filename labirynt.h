@@ -23,7 +23,7 @@ void free_labirynt(labirynt);
 
 void ktore_obok(labirynt);
 
-void losuj(labirynt, int);
+void losuj(labirynt);
 
 head init_stos();
 
@@ -34,5 +34,7 @@ int pop(head);
 void generuj(labirynt);
 
 void wypisz(labirynt);
+
+int czy_liczba(char *);
 
 #endif
