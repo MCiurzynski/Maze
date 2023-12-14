@@ -10,9 +10,14 @@ typedef struct head {
 	element_pointer next;	
 } *head;
 
+struct near {
+	int who;
+	double value;
+};
+
 typedef struct maze_room {
 	int n;
-	double next[3][2];
+	struct near next[3];
 } *room;
 
 typedef struct labirynt {

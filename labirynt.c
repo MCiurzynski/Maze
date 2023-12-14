@@ -21,9 +21,9 @@ labirynt init(int n) {
 	}
 	for (i = 0; i < n * n; i++) {
 		(l->maze[i]).n = 0;
-		(l->maze[i]).next[0][0] = -1;
-		(l->maze[i]).next[1][0] = -1;
-		(l->maze[i]).next[2][0] = -1;
+		((l->maze[i]).next[0]).who = -1;
+		((l->maze[i]).next[1]).who = -1;
+		((l->maze[i]).next[2]).who = -1;
 	}
 	l->obok = malloc(sizeof(*(l->obok)) * n * n);
 	if (l->obok == NULL) {
@@ -182,8 +182,8 @@ void generuj(labirynt l) {
 					push(stos, poz);
 					x = 1;
 					l->visited[l->obok[poz][i]] = 1;
-					(l->maze[poz]).next[(l->maze[poz]).n][0] = l->obok[poz][i];
-					(l->maze[poz]).next[(l->maze[poz]).n][1] = (double)rand() / RAND_MAX * 10;
+					((l->maze[poz]).next[(l->maze[poz]).n]).who = l->obok[poz][i];
+					((l->maze[poz]).next[(l->maze[poz]).n]).value = (double)rand() / RAND_MAX * 10;
 					(l->maze[poz]).n++;
 					poz = l->obok[poz][i];
 					break;
@@ -215,9 +215,9 @@ void wypisz(labirynt l) {
 	for (i = 0; i < l->n; i++) {
 		printf("|   ");
 		for (j = 0; j < l->n - 1; j++) {
-			if (l->maze[i * l->n + j].next[0][0] == (i * l->n + j + 1) || l->maze[i * l->n + j].next[1][0] == (i * l->n + j + 1) || l->maze[i * l->n + j].next[2][0] == (i * l->n + j + 1))
+			if (l->maze[i * l->n + j].next[0].who == (i * l->n + j + 1) || l->maze[i * l->n + j].next[1].who == (i * l->n + j + 1) || l->maze[i * l->n + j].next[2].who == (i * l->n + j + 1))
 				printf("    ");
-			else if (l->maze[i * l->n + j + 1].next[0][0] == (i * l->n + j) || l->maze[i * l->n + j + 1].next[1][0] == (i * l->n + j) || l->maze[i * l->n + j + 1].next[2][0] == (i * l->n + j))
+			else if (l->maze[i * l->n + j + 1].next[0].who == (i * l->n + j) || l->maze[i * l->n + j + 1].next[1].who == (i * l->n + j) || l->maze[i * l->n + j + 1].next[2].who == (i * l->n + j))
 				printf("    ");
 			else
 				printf("|   ");
@@ -225,9 +225,9 @@ void wypisz(labirynt l) {
 		printf("|\n");
 		if (i != l->n - 1) {
 			for (j = 0; j < l->n; j++){
-				if (l->maze[i * l->n + j].next[0][0] == (i * l->n + j + l->n) || l->maze[i * l->n + j].next[1][0] == (i * l->n + j + l->n) || l->maze[i * l->n + j].next[2][0] == (i * l->n + j + l->n))
+				if (l->maze[i * l->n + j].next[0].who == (i * l->n + j + l->n) || l->maze[i * l->n + j].next[1].who == (i * l->n + j + l->n) || l->maze[i * l->n + j].next[2].who == (i * l->n + j + l->n))
 					printf("+   ");
-				else if (l->maze[i * l->n + j + l->n].next[0][0] == (i * l->n + j) || l->maze[i * l->n + j + l->n].next[1][0] == (i * l->n + j) || l->maze[i * l->n + j + l->n].next[2][0] == (i * l->n + j))
+				else if (l->maze[i * l->n + j + l->n].next[0].who == (i * l->n + j) || l->maze[i * l->n + j + l->n].next[1].who == (i * l->n + j) || l->maze[i * l->n + j + l->n].next[2].who == (i * l->n + j))
 					printf("+   ");
 				else
 					printf("+---");
