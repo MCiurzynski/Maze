@@ -199,6 +199,12 @@ void generuj(labirynt l) {
 
 void wypisz(labirynt l) {
 	int i, j;
+	for (i = 0; i < l->n / 2; i++)
+		printf("    ");
+	printf("  |-----Wejscie\n");
+	for (i = 0; i < l->n / 2; i++)
+		printf("    ");
+	printf("  v\n");
 	for (i = 0; i < l->n; i++) {
 		if (i != l->n / 2)
 			printf("+---");
@@ -236,6 +242,12 @@ void wypisz(labirynt l) {
 			printf("+   ");
 	}
 	printf("+\n");
+	for (i = 0; i < l->n / 2; i++)
+		printf("    ");
+	printf("  ^\n");
+	for (i = 0; i < l->n / 2; i++)
+		printf("    ");
+	printf("  |-----Wyjscie\n");
 }
 
 int czy_liczba(char *liczba) {
