@@ -4,16 +4,30 @@
 #include "labirynt.h"
 
 int main(int argc, char **argv) {
+	if (argc > 1) {
+		if(czy_liczba(argv[1]) == 0) {
+			printf("Nieprawidlowy argument\n");
+			return 2;
+		}
+	}
 	int n = argc > 1 ? atoi(argv[1]) : 5;
-	int x = argc > 2 ? atoi(argv[2]) : time(NULL);
+#ifndef MORE
+	if (n < 1 || n > 10) {
+		printf("Nieprawidlowa liczba\n");
+		return 3;
+	}
+#else
+	if (n == 0) {
+		printf("Nieprawidlowa liczba\n");
+		return 3;
+	}
+#endif
 	labirynt l = init(n);
-	ktore_obok(l);
-	int i;
-	losuj(l, x);
-	head stos = init_stos();
-	generuj(l);
-//	for (i = 0; i < n * n; i++)
-//		printf("%d: %d %d %d %d\n", i, l->obok[i][0], l->obok[i][1], l->obok[i][2], l->obok[i][3]);
+	if (l == NULL) {
+		printf("Nie udalo sie stworzyc labiryntu: ALLOCATION ERROR\n");
+		return 1;
+	}
+    generuj(l);
 	wypisz(l);
 	free_labirynt(l);
 	return 0;
