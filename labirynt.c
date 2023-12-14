@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "labirynt.h"
 
 labirynt init(int n) {
@@ -19,11 +20,10 @@ labirynt init(int n) {
 		return NULL;
 	}
 	for (i = 0; i < n * n; i++) {
-		l->maze[i] = calloc(n * n, sizeof(double));
-		if (l->maze[i] == NULL) {
-			free_labirynt(l);
-			return NULL;
-		}
+		(l->maze[i]).n = 0;
+		(l->maze[i]).next[0][0] = -1;
+		(l->maze[i]).next[1][0] = -1;
+		(l->maze[i]).next[2][0] = -1;
 	}
 	l->obok = malloc(sizeof(*(l->obok)) * n * n);
 	if (l->obok == NULL) {
@@ -50,14 +50,8 @@ void free_labirynt(labirynt l) {
 		}
 		free(l->obok);
 	}
-	if (l->maze != NULL) {
-		for (i = 0; i < l->n * l->n; i++) {
-			if (l->maze[i] != NULL)
-				break;
-			free(l->maze[i]);
-		}
+	if (l->maze != NULL)
 		free(l->maze);
-	}
 	if (l->visited != NULL)
 		free(l->visited);
 	if (l != NULL)
@@ -66,7 +60,7 @@ void free_labirynt(labirynt l) {
 
 void ktore_obok(labirynt l) {
 	int i;
-	for (i = 0; i < l->n * l->n; i++) {
+	for (i = 0; i < (l->n * l->n); i++) {
 		if (i == 0 || i == l->n - 1 || i == (l->n * l->n - l->n) || i == l->n * l->n - 1) {
 			if (i == 0) {
 				l->obok[i][0] = 1;
@@ -129,10 +123,14 @@ void ktore_obok(labirynt l) {
 	}
 }
 
-void losuj(labirynt l, int x)
+void losuj(labirynt l)
 {
 	int i, j, poz, tmp;
-	srand(x);
+#ifdef DEBUG
+    srand(DEBUG);
+#else
+    srand(time(NULL));
+#endif
 	for (i = 0; i < l->n * l->n; i++) {
 		for (j = 0; j < 4; j++) {
 			poz = ((double)rand()/RAND_MAX) * 4;
@@ -169,9 +167,10 @@ int pop(head stos) {
 }
 
 void generuj(labirynt l) {
-	int i, x, koniec;
+	int i, x, koniec, poz = l->n / 2;;
 	head stos = init_stos();
-	int poz = l->n / 2;
+    ktore_obok(l);
+    losuj(l);
 	koniec = l->n * l->n - l->n + (l->n/2);
 	push(stos, poz);
 	l->visited[poz] = 1;
@@ -183,7 +182,9 @@ void generuj(labirynt l) {
 					push(stos, poz);
 					x = 1;
 					l->visited[l->obok[poz][i]] = 1;
-					l->maze[poz][l->obok[poz][i]] = (double)rand() / RAND_MAX * 10;
+					(l->maze[poz]).next[(l->maze[poz]).n][0] = l->obok[poz][i];
+					(l->maze[poz]).next[(l->maze[poz]).n][1] = (double)rand() / RAND_MAX * 10;
+					(l->maze[poz]).n++;
 					poz = l->obok[poz][i];
 					break;
 				}
@@ -195,7 +196,6 @@ void generuj(labirynt l) {
 			poz = pop(stos);
 	}
 }
-
 
 void wypisz(labirynt l) {
 	int i, j;
@@ -209,18 +209,22 @@ void wypisz(labirynt l) {
 	for (i = 0; i < l->n; i++) {
 		printf("|   ");
 		for (j = 0; j < l->n - 1; j++) {
-			if (l->maze[i * l->n + j][i * l->n + j + 1] == 0 && l->maze[i * l->n + j + 1][i * l->n + j] == 0)
-				printf("|   ");
-			else
+			if (l->maze[i * l->n + j].next[0][0] == (i * l->n + j + 1) || l->maze[i * l->n + j].next[1][0] == (i * l->n + j + 1) || l->maze[i * l->n + j].next[2][0] == (i * l->n + j + 1))
 				printf("    ");
+			else if (l->maze[i * l->n + j + 1].next[0][0] == (i * l->n + j) || l->maze[i * l->n + j + 1].next[1][0] == (i * l->n + j) || l->maze[i * l->n + j + 1].next[2][0] == (i * l->n + j))
+				printf("    ");
+			else
+				printf("|   ");
 		}
 		printf("|\n");
 		if (i != l->n - 1) {
 			for (j = 0; j < l->n; j++){
-				if (l->maze[i * l->n + j][i * l->n + j + l->n] == 0 && l->maze[i * l->n + j + l->n][i * l->n + j] == 0)
-					printf("+---");
-				else
+				if (l->maze[i * l->n + j].next[0][0] == (i * l->n + j + l->n) || l->maze[i * l->n + j].next[1][0] == (i * l->n + j + l->n) || l->maze[i * l->n + j].next[2][0] == (i * l->n + j + l->n))
 					printf("+   ");
+				else if (l->maze[i * l->n + j + l->n].next[0][0] == (i * l->n + j) || l->maze[i * l->n + j + l->n].next[1][0] == (i * l->n + j) || l->maze[i * l->n + j + l->n].next[2][0] == (i * l->n + j))
+					printf("+   ");
+				else
+					printf("+---");
 			}
 			printf("+\n");
 		}
@@ -232,4 +236,12 @@ void wypisz(labirynt l) {
 			printf("+   ");
 	}
 	printf("+\n");
+}
+
+int czy_liczba(char *liczba) {
+	int i;
+	for (i = 0; liczba[i]; i++)
+		if (liczba[i] < '0' || liczba[i] > '9')
+			return 0;
+	return 1;
 }
