@@ -32,6 +32,11 @@ int main(int argc, char **argv) {
 	wypisz_labirynt(l);
 	wypisz_labirynt_oznaczony(l);
 	sciezka_pointer sciezka = szukaj(l);
+	if (sciezka == NULL) {
+		printf("Nie udalo sie zaalokowac pamieci na sciezke\n");
+		free_labirynt(l);
+		return 4;
+	}
 	wypisz_sciezka(sciezka);
 	free_labirynt(l);
 	return 0;

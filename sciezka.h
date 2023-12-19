@@ -16,6 +16,8 @@ typedef struct sciezka {
 
 sciezka_pointer init_sciezka(int);
 
+void sort(labirynt);
+
 sciezka_pointer szukaj(labirynt);
 
 void wypisz_sciezka(sciezka_pointer);

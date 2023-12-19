@@ -38,6 +38,8 @@ void sort(labirynt l) {
 sciezka_pointer szukaj(labirynt l) {
 	int poz = l->n / 2, koniec = l->n * l->n - l->n + (l->n / 2);
 	head stos = init_stos();
+	if (stos == NULL)
+		return NULL;
 	sort(l);
 	elem_sciez_pointer element, tmp;
 	if (stos == NULL)
@@ -57,6 +59,19 @@ sciezka_pointer szukaj(labirynt l) {
 	poz = l->n / 2;
 	while (poz != koniec) {
 		element = malloc(sizeof(*element));
+		if (element == NULL) {
+			if (sciezka->next == NULL) {
+				free(sciezka);
+				return NULL;
+			}
+			while (sciezka->next != NULL) {
+				tmp = sciezka->next;
+				sciezka->next = tmp->next;
+				free(tmp);
+			}
+			free(sciezka);
+			return NULL;
+		}
 		element->pole = (l->maze[poz].next[l->maze[poz].n]).who;
 		element->value = (l->maze[poz].next[l->maze[poz].n]).value;
 		element->next = NULL;
@@ -77,7 +92,7 @@ sciezka_pointer szukaj(labirynt l) {
 void wypisz_sciezka(sciezka_pointer sciezka) {
     elem_sciez_pointer tmp;
     int poz, przejscia = 0;
-    double value;
+    double value = 0;
     printf("Skad Dokad Waga\n");
     while (sciezka->next != NULL) {
 		poz = sciezka->first;
@@ -89,5 +104,6 @@ void wypisz_sciezka(sciezka_pointer sciezka) {
 		value += tmp->value;
 		free(tmp);
 	}
+    free(sciezka);
     printf("Sciezka rozwiazujaca labirynt ma dlugosc: %d, i wage: %g\n", przejscia, value);
 }
