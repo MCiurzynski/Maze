@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "labirynt.h"
+#include "generuj.h"
+#include "sciezka.h"
 
 int main(int argc, char **argv) {
 	if (argc > 1) {
@@ -27,8 +28,11 @@ int main(int argc, char **argv) {
 		printf("Nie udalo sie stworzyc labiryntu: ALLOCATION ERROR\n");
 		return 1;
 	}
-    generuj(l);
-	wypisz(l);
+	generuj(l);
+	wypisz_labirynt(l);
+	wypisz_labirynt_oznaczony(l);
+	sciezka_pointer sciezka = szukaj(l);
+	wypisz_sciezka(sciezka);
 	free_labirynt(l);
 	return 0;
 }

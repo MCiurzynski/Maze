@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include "labirynt.h"
+#include "stos.h"
+#include "generuj.h"
 
 labirynt init(int n) {
 	int i;
@@ -143,29 +144,6 @@ void losuj(labirynt l)
 	}
 }
 
-head init_stos() {
-	head stos = malloc(sizeof(*stos));
-	return stos;
-}
-
-void push(head stos, int a) {
-	element_pointer next = malloc(sizeof(*next));
-	next->n = a;
-	next->next = stos->next;
-	stos->next = next;
-}
-
-int pop(head stos) {
-	int x;
-	if (stos->next == NULL)
-		return -1;
-	element_pointer tmp = stos->next;
-	stos->next = tmp->next;
-	x = tmp->n;
-	free(tmp);
-	return x;
-}
-
 void generuj(labirynt l) {
 	int i, x, koniec, poz = l->n / 2;;
 	head stos = init_stos();
@@ -195,9 +173,10 @@ void generuj(labirynt l) {
 		if (x == 0)
 			poz = pop(stos);
 	}
+    free(stos);
 }
 
-void wypisz(labirynt l) {
+void wypisz_labirynt(labirynt l) {
 	int i, j;
 	for (i = 0; i < l->n / 2; i++)
 		printf("    ");
@@ -247,7 +226,60 @@ void wypisz(labirynt l) {
 	printf("  ^\n");
 	for (i = 0; i < l->n / 2; i++)
 		printf("    ");
-	printf("  |-----Wyjscie\n");
+	printf("  |-----Wyjscie\n\n");
+}
+
+void wypisz_labirynt_oznaczony(labirynt l) {
+	int i, j;
+	for (i = 0; i < l->n / 2; i++)
+		printf("    ");
+	printf("  |-----Wejscie\n");
+	for (i = 0; i < l->n / 2; i++)
+		printf("    ");
+	printf("  v\n");
+	for (i = 0; i < l->n; i++) {
+		if (i != l->n / 2)
+			printf("+---");
+		else
+			printf("+   ");
+	}
+	printf("+\n");
+	for (i = 0; i < l->n; i++) {
+		printf("|%2d ", i * l->n);
+		for (j = 0; j < l->n - 1; j++) {
+			if (l->maze[i * l->n + j].next[0].who == (i * l->n + j + 1) || l->maze[i * l->n + j].next[1].who == (i * l->n + j + 1) || l->maze[i * l->n + j].next[2].who == (i * l->n + j + 1))
+				printf("%2d  ", i * l->n + j + 1);
+			else if (l->maze[i * l->n + j + 1].next[0].who == (i * l->n + j) || l->maze[i * l->n + j + 1].next[1].who == (i * l->n + j) || l->maze[i * l->n + j + 1].next[2].who == (i * l->n + j))
+				printf("%2d  ", i * l->n + j + 1);
+			else
+				printf("|%2d ", i * l->n + j + 1);
+		}
+		printf("|\n");
+		if (i != l->n - 1) {
+			for (j = 0; j < l->n; j++){
+				if (l->maze[i * l->n + j].next[0].who == (i * l->n + j + l->n) || l->maze[i * l->n + j].next[1].who == (i * l->n + j + l->n) || l->maze[i * l->n + j].next[2].who == (i * l->n + j + l->n))
+					printf("+   ");
+				else if (l->maze[i * l->n + j + l->n].next[0].who == (i * l->n + j) || l->maze[i * l->n + j + l->n].next[1].who == (i * l->n + j) || l->maze[i * l->n + j + l->n].next[2].who == (i * l->n + j))
+					printf("+   ");
+				else
+					printf("+---");
+			}
+			printf("+\n");
+		}
+	}
+	for (i = 0; i < l->n; i++) {
+		if (i != l->n / 2)
+			printf("+---");
+		else
+			printf("+   ");
+	}
+	printf("+\n");
+	for (i = 0; i < l->n / 2; i++)
+		printf("    ");
+	printf("  ^\n");
+	for (i = 0; i < l->n / 2; i++)
+		printf("    ");
+	printf("  |-----Wyjscie\n\n");
 }
 
 int czy_liczba(char *liczba) {

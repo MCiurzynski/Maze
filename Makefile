@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -Wall -pedantic
 
-SRCS = main.c labirynt.c
+SRCS = main.c generuj.c stos.c sciezka.c
 OBJS = $(SRCS:.c=.o)
 
 TARGET = main.out
