@@ -4,7 +4,7 @@
 #include "stos.h"
 #include "generuj.h"
 
-labirynt init(int n) {
+labirynt init(int n) { //Funkcja inicjująca strukturę labiryntu, zwraca strukture, jeśli nie uda się zainicjować to zwraca NULL, jako argument przyjmuje szerokość labirytu
 	int i;
 	labirynt l = malloc(sizeof(*l));
 	if (l == NULL)
@@ -41,7 +41,7 @@ labirynt init(int n) {
 	return l;
 }
 
-void free_labirynt(labirynt l) {
+void free_labirynt(labirynt l) { //Funkcja zwalniająca pamięć zajmowaną przez labirynt, przyjmuje jako argument strukture labiryntu
 	int i;
 	if (l->obok != NULL) {
 		for (i = 0; i < l->n * l->n; i++) {
@@ -59,7 +59,8 @@ void free_labirynt(labirynt l) {
 		free(l);
 }
 
-void ktore_obok(labirynt l) {
+void ktore_obok(labirynt l) { //Funkcja zapisująca w strukturze labiryntu możliwe przejścia z danego 
+			      //pomieszczenia labiryntu do innego pomieszczenia, przyjmuje jako argument strutkure labiryntu
 	int i;
 	for (i = 0; i < (l->n * l->n); i++) {
 		if (i == 0 || i == l->n - 1 || i == (l->n * l->n - l->n) || i == l->n * l->n - 1) {
@@ -124,14 +125,10 @@ void ktore_obok(labirynt l) {
 	}
 }
 
-void losuj(labirynt l)
+void losuj(labirynt l) //Funcja losująca kolejne przejścia algorytmu generującego labirynt w strukturze labiryntu, przyjmuje jako argument tą strukture
 {
 	int i, j, poz, tmp;
-#ifdef DEBUG
-    srand(DEBUG);
-#else
-    srand(time(NULL));
-#endif
+	srand(time(NULL));
 	for (i = 0; i < l->n * l->n; i++) {
 		for (j = 0; j < 4; j++) {
 			poz = ((double)rand()/RAND_MAX) * 4;
@@ -144,11 +141,11 @@ void losuj(labirynt l)
 	}
 }
 
-void generuj(labirynt l) {
+void generuj(labirynt l) { //Funcja generująca labirynt w strukturze labiryntu, przyjmuje jako argument tą strukturę
 	int i, x, koniec, poz = l->n / 2;;
 	head stos = init_stos();
-    ktore_obok(l);
-    losuj(l);
+	ktore_obok(l);
+	losuj(l);
 	koniec = l->n * l->n - l->n + (l->n/2);
 	push(stos, poz);
 	l->visited[poz] = 1;
@@ -176,7 +173,7 @@ void generuj(labirynt l) {
     free(stos);
 }
 
-void wypisz_labirynt(labirynt l) {
+void wypisz_labirynt(labirynt l) { //Funkcja rysująca labirynt bez oznaczeń pokoi, przyjmuje jako argument strukture labiryntu
 	int i, j;
 	for (i = 0; i < l->n / 2; i++)
 		printf("    ");
@@ -229,7 +226,7 @@ void wypisz_labirynt(labirynt l) {
 	printf("  |-----Wyjscie\n\n");
 }
 
-void wypisz_labirynt_oznaczony(labirynt l) {
+void wypisz_labirynt_oznaczony(labirynt l) { //Funkcja rysuje labirynt w konsoli wraz z numerami pokoi
 	int i, j;
 	for (i = 0; i < l->n / 2; i++)
 		printf("    ");
@@ -282,7 +279,7 @@ void wypisz_labirynt_oznaczony(labirynt l) {
 	printf("  |-----Wyjscie\n\n");
 }
 
-int czy_liczba(char *liczba) {
+int czy_liczba(char *liczba) { //Funkcja sprawdza czy podany argument jest liczba
 	int i;
 	for (i = 0; liczba[i]; i++)
 		if (liczba[i] < '0' || liczba[i] > '9')

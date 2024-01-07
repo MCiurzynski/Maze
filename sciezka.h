@@ -7,12 +7,12 @@ typedef struct elem_sciez {
 	int pole;
 	double value;
 	struct elem_sciez *next;
-} *elem_sciez_pointer;
+} *elem_sciez_pointer; //Struktura przechowująca element ścieżki rozwiązującej labirynt
 
 typedef struct sciezka {
 	int first;
 	struct elem_sciez *next;
-} *sciezka_pointer;
+} *sciezka_pointer; //Struktura przechowująca ścieżkę rozwiązania labiryntu, oparta na stosie
 
 sciezka_pointer init_sciezka(int);
 

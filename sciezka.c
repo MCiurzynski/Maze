@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-sciezka_pointer init_sciezka(int start) {
+sciezka_pointer init_sciezka(int start) { //Funkcja inicjująca strukturę ścieżki, przyjmuje jako argument początek ścieżki, zwraca strukture ścieżki
 	sciezka_pointer sciezka = malloc(sizeof(*sciezka));
 	if (sciezka == NULL)
 		return NULL;
@@ -12,35 +12,12 @@ sciezka_pointer init_sciezka(int start) {
 	return sciezka;
 }
 
-void sort(labirynt l) {
-	int i, twho;
-	double tvalue;
-	for (i = 0; i < l->n * l->n; i++) {
-		if (l->maze[i].next[0].who > l->maze[i].next[1].who && l->maze[i].n > 1) {
-			twho = l->maze[i].next[0].who;
-			tvalue = l->maze[i].next[0].value;
-			l->maze[i].next[0].who = l->maze[i].next[1].who;
-			l->maze[i].next[0].value = l->maze[i].next[1].value;
-			l->maze[i].next[1].who = twho;
-			l->maze[i].next[1].value = tvalue;
-		}
-		if (l->maze[i].next[1].who > l->maze[i].next[2].who && l->maze[i].n > 2) {
-			twho = l->maze[i].next[1].who;
-			tvalue = l->maze[i].next[1].value;
-			l->maze[i].next[1].who = l->maze[i].next[2].who;
-			l->maze[i].next[1].value = l->maze[i].next[2].value;
-			l->maze[i].next[2].who = twho;
-			l->maze[i].next[2].value = tvalue;
-		}
-	}
-}
-
-sciezka_pointer szukaj(labirynt l) {
+sciezka_pointer szukaj(labirynt l) { // Funkcja szukająca ścieżki rozwiązania labiryntu algorytmem dfs
+				     // i przyjmująca jako argument strukturę labiryntu i zwracająca strukturę ścieżki
 	int poz = l->n / 2, koniec = l->n * l->n - l->n + (l->n / 2);
 	head stos = init_stos();
 	if (stos == NULL)
 		return NULL;
-	sort(l);
 	elem_sciez_pointer element, tmp;
 	if (stos == NULL)
 		return NULL;
@@ -89,7 +66,7 @@ sciezka_pointer szukaj(labirynt l) {
     return sciezka;
 }
 
-void wypisz_sciezka(sciezka_pointer sciezka) {
+void wypisz_sciezka(sciezka_pointer sciezka) { //Funkcja wypisująca ścieżkę rozwiązania labiryntu, jako argument dostaje ścieżkę
     elem_sciez_pointer tmp;
     int poz, przejscia = 0;
     double value = 0;
@@ -105,5 +82,5 @@ void wypisz_sciezka(sciezka_pointer sciezka) {
 		free(tmp);
 	}
     free(sciezka);
-    printf("Sciezka rozwiazujaca labirynt ma dlugosc: %d, i wage: %g\n", przejscia, value);
+    printf("Sciezka rozwiazujaca labirynt ma dlugosc: %d, i wage: %lf\n", przejscia, value);
 }

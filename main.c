@@ -12,17 +12,10 @@ int main(int argc, char **argv) {
 		}
 	}
 	int n = argc > 1 ? atoi(argv[1]) : 5;
-#ifndef MORE
-	if (n < 1 || n > 10) {
+	if (n < 2 || n > 10) {
 		printf("Nieprawidlowa liczba\n");
 		return 3;
 	}
-#else
-	if (n == 0) {
-		printf("Nieprawidlowa liczba\n");
-		return 3;
-	}
-#endif
 	labirynt l = init(n);
 	if (l == NULL) {
 		printf("Nie udalo sie stworzyc labiryntu: ALLOCATION ERROR\n");
