@@ -5,6 +5,10 @@
 #include "sciezka.h"
 
 int main(int argc, char **argv) {
+	if (argc > 2) {
+		printf("Podano za duzo argumentow\n");
+		return 5;
+	}
 	if (argc > 1) {
 		if(czy_liczba(argv[1]) == 0) {
 			printf("Nieprawidlowy argument\n");
